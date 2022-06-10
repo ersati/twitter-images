@@ -72,9 +72,9 @@ app.get("/images/:img", (req, res) => {
     }
 
 })
-app.get('*', function(req, res) {
-    res.redirect('/');
-});
+// app.get('*', function(req, res) {
+//     res.redirect('/');
+// });
 let port = process.env.PORT;
 if (port == null || port == "") {
     port = 5000;
