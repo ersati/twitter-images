@@ -81,5 +81,5 @@ if (port == null || port == "") {
 }
 
 app.listen(port, function () {
-    console.log('serwer is working on port 3000')
+    console.log('serwer is working on port 5000')
 })
