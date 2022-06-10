@@ -1,13 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Searcher</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
 
 
-<section class="all">
-    <h1 class='headline'>Task for Today </h1>
+<body>
     
-</section>
-<section class="category-list">
-    
-    <p class='headline'><%= name%></p>
+    <div class="wrapper">
+        <h1 class="headline">Search Images in Twitter</h1>
+        <div class="search-container">
+            <form action="/images" method="post">
+            <!-- <label for="search">Find Images by tags, or Username</label> -->
+            <input class="search-text" type="text" name="search" id="searchBtn">
+            <input class = "btn" type="submit" value="Search">
+        </form>
+        </div>
+    </div>
 
-</section>
 
+
+
+</body>
+</html>

@@ -75,3 +75,84 @@ if (port == null || port == "") {
 app.listen(port, function () {
     console.log('serwer is working on port 3000')
 })
+
+
+
+const BearerToken = process.env.BTOKEN;
+const endpointUrl = "https://api.twitter.com/2/tweets/search/recent";
+
+//Get Tweets from Twitter API
+const getTweets = async(id) => {
+
+    const params = {
+        'query': 'from:'+id+' -is:retweet',
+        'tweet.fields': 'created_at',
+        'expansions': 'author_id'
+    }
+    const response = await needle ('get', endpointUrl, params,{
+        headers: {
+            "User-Agent": "v2RecentSearchJS",
+            "authorization": `Bearer ${BearerToken}`
+        }
+    })
+    console.log(response.statusCode)
+    if (response.statusCode !== 200) {
+        if (response.statusCode === 403) {
+            res.status(403).send(response.body);
+        } 
+        else {
+            throw new Error(response.body.error.message);
+        }
+    }
+    if (response.body)
+        return response.body;
+    else
+        throw new Error("Unsuccessful Request");   
+}
+
+//This returns the object to client
+const getTweetAnalysis = async(req, res) => {
+    try {
+        let twitterData =await getTweets(req.params.id);
+        //res.send(twitterData);
+        res.send(await analyze(twitterData));
+    } catch (error) {
+        res.send(error);
+    }
+
+}
+
+//Simple Analysis
+const twitterObject = {}
+const analyze = async(twitterData) =>
+{
+    twitterObject["username"] = twitterData.includes.users[0].username;
+    twitterObject["name"] = twitterData.includes.users[0].name;
+    // console.log(twitterData.data[0].text)
+    let averageCharacter = 0;
+    let averageWord = 0;
+    let totalCharacter = 0;
+    let totalWord = 0;
+    let texts = twitterData.data;
+    if(texts)
+    {
+        for(let index =0 ; index < twitterData.data.length ; index++)
+        {
+            totalCharacter += texts[index].text.length;
+            totalWord += texts[index].text.split(" ").length;
+        }
+    }
+    if(twitterData.meta.result_count > 0)
+    {
+        twitterObject["usesActively"] =  true;
+        averageCharacter = totalCharacter/twitterData.meta.result_count;
+        averageWord = totalWord/twitterData.meta.result_count;
+    }
+    else
+    {
+        twitterObject["usesActively"] =  false;
+    }
+    twitterObject["averageWordCount"] = averageWord;
+    twitterObject["averageCharacterCount"] = averageCharacter;
+    return twitterObject;
+}

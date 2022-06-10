@@ -1,30 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Twitter Searcher</title>
+    <link rel="stylesheet" href="/public/style.css">
 </head>
+
 <body>
-    <h1 class="headline">Search Images in Twitter</h1>
-    <label for="search"></label>
-    <input type="text" name="search" id="searchBtn">
-
-    <% if (locals.media ) {%>
-    <% media.forEach(el => { %>
-        <p><%= el.media_key%></p>
+    <div class="wrapper">
+        <h1 class="headline">Search Images in Twitter</h1>
+        <div class="search-container">
+            <form action="/images" method="post">
+            <!-- <label for="search">Find Images by tags, or Username</label> -->
+            <input class="search-text" type="text" name="search" id="searchBtn">
+            <div class="btn-wrapper">
+            <input class="btn" type="submit" value="Search">
+            <form action="/revert">
+                <input class="btn" type="submit" value="Home">
+            </form>
+        </div>
+        </form>
+        </div>
+    </div>
+    <div class="image-wrapper">
+        <% if (locals.media ) {%>
+        <% media.forEach(el => { %>
+        <!-- <p><%= el.media_key%></p> -->
         <% if(el.type == 'photo') {%>
-            <img class="image"src="<%=  el.url %>" alt="" srcset="">
-            <a href="<%= el.url %>">click me </a>
-        <%  } %>
-        <% }) %> 
-    <% }else { %>
-        <p>No Items to display </p>
-        <% } %>   
+        <a href="<%=  el.url %>"><img class="image" src="<%=  el.url %>" alt="" srcset=""></a>
 
-    <img src="https://cdn.pixabay.com/photo/2016/09/21/04/46/barley-field-1684052_960_720.jpg" alt="" srcset="">
-    <img src="https://pbs.twimg.com/media/FTEB60aX0AMzXxg.jpg" alt="" srcset="">
+        <%  } %>
+        <% }) %>
+        <% }else { %>
+        <p>No Items to display </p>
+        <% } %>
+    </div>
 </body>
+
 </html>
